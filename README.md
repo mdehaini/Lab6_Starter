@@ -1,1 +1,4 @@
-# Lab 6 - Starter
+# Lab 6 
+Maryam Dehaini
+
+https://mdehaini.github.io/Lab6_Starter/
