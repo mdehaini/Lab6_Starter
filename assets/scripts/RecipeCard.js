@@ -121,7 +121,7 @@ class RecipeCard extends HTMLElement {
       div.appendChild(span);
       img = document.createElement("img");
       let stars = Math.round(searchForKey(data, 'ratingValue'));
-      img.setAttribute('src', "/assets/images/icons/" + stars + "-star.svg");
+      img.setAttribute('src', "assets/images/icons/" + stars + "-star.svg");
       img.setAttribute('alt', stars + ' stars');
       div.appendChild(img);
       let count = document.createElement('span');
