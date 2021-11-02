@@ -1,13 +1,15 @@
 class RecipeCard extends HTMLElement {
   constructor() {
     // Part 1 Expose - TODO
-
+    super();
+    this.attachShadow({ mode: 'open' });
     // You'll want to attach the shadow DOM here
   }
 
   set data(data) {
     // This is the CSS that you'll use for your recipe cards
     const styleElem = document.createElement('style');
+    let shadow = this.shadowRoot;
     const styles = `
       * {
         font-family: sans-serif;
@@ -88,6 +90,57 @@ class RecipeCard extends HTMLElement {
     // Here's the root element that you'll want to attach all of your other elements to
     const card = document.createElement('article');
 
+    let img = document.createElement("img");
+    img.setAttribute('src', searchForKey(data, 'thumbnailUrl'));
+    img.setAttribute('alt', searchForKey(data, 'headline'));
+    card.appendChild(img);
+
+    let p = document.createElement('p');
+    p.setAttribute('class', 'title');
+    let a = document.createElement('a');
+    a.innerHTML = searchForKey(data, 'headline');
+    a.setAttribute('href', searchForKey(data, 'url'))
+    p.append(a);
+    card.appendChild(p);
+
+    p = document.createElement('p');
+    p.innerHTML = searchForKey(data, 'name');
+    p.setAttribute('class', 'organization');
+    card.append(p);
+
+    let div = document.createElement('div');
+    div.setAttribute('class', 'rating');
+    let span = document.createElement('span');
+    let rate = searchForKey(data, 'ratingValue')
+    if (rate == null) {
+      span.innerHTML = "No Reviews";
+      div.appendChild(span);
+    }
+    else {
+      span.innerHTML = searchForKey(data, 'ratingValue');
+      div.appendChild(span);
+      img = document.createElement("img");
+      let stars = Math.round(searchForKey(data, 'ratingValue'));
+      img.setAttribute('src', "/assets/images/icons/" + stars + "-star.svg");
+      img.setAttribute('alt', stars + ' stars');
+      div.appendChild(img);
+      let count = document.createElement('span');
+      count.innerHTML = '(' + searchForKey(data, 'ratingCount') + ')';
+      div.appendChild(count);
+    }
+    card.append(div);
+
+    let time = document.createElement('time');
+    time.innerHTML = convertTime(searchForKey(data, 'totalTime'));
+    card.append(time);
+
+    p = document.createElement('p');
+    p.innerHTML = createIngredientList(searchForKey(data, 'recipeIngredient'));
+    p.setAttribute('class', 'ingredients');
+    card.append(p);
+
+    shadow.append(styleElem);
+    shadow.appendChild(card);
     // Some functions that will be helpful here:
     //    document.createElement()
     //    document.querySelector()
